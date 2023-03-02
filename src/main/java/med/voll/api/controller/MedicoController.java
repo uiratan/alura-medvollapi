@@ -24,10 +24,31 @@ public class MedicoController {
         repository.save(new Medico(dados));
     }
 
-    @GetMapping
+
 //    public Page<DadosListagemMedico> listar(@PageableDefault(size=10, page=0, sort={"nome"}) Pageable pageable) {
+
+    @GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(sort={"nome"}) Pageable pageable) {
         //return repository.findAll().stream().map(DadosListagemMedico::new).toList();
-        return repository.findAll(pageable).map(DadosListagemMedico::new);
+        // busca todos os medicos
+        //return repository.findAll(pageable).map(DadosListagemMedico::new);
+
+        // busca apenas os medicos com ativo = true usando padrao do spring - by campo valor
+        return repository.findAllByAtivoTrue(pageable).map(DadosListagemMedico::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosMedicoAtualizacao dados) {
+        var medico = repository.getReferenceById(dados.id());
+        medico.atualizarInformacoes(dados);
+    }
+    @DeleteMapping("{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id) {
+        // Hard delete  repository.deleteById(id);
+        // Exclusao lógica
+        var medico = repository.getReferenceById(id);
+        medico.excluir();
     }
 }
