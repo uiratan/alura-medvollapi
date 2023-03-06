@@ -33,7 +33,6 @@ public class MedicoController {
         // devolver 201
         // devolver o cabeçalho location com a uri
         // devolver no corpo da resposta uma representação do recurso recem criado
-
     }
 
     @GetMapping
@@ -43,8 +42,8 @@ public class MedicoController {
         //return repository.findAll(pageable).map(DadosListagemMedico::new);
 
         // busca apenas os medicos com ativo = true usando padrao do spring - by campo valor
-        var Page = repository.findAllByAtivoTrue(pageable).map(DadosListagemMedico::new);
-        return ResponseEntity.ok(Page);
+        var page = repository.findAllByAtivoTrue(pageable).map(DadosListagemMedico::new);
+        return ResponseEntity.ok(page);
 
         // retorna 200
     }
@@ -60,6 +59,9 @@ public class MedicoController {
     }
 
     @PutMapping
+    /*
+    TODO: Atualizar este método para passar o parâmetro no path e nao no body
+     */
     @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid DadosMedicoAtualizacao dados) {
         var medico = repository.getReferenceById(dados.id());
@@ -79,7 +81,6 @@ public class MedicoController {
         medico.excluir();
 
         return ResponseEntity.noContent().build();
-
         // retorna 204
     }
 }

@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.endereco.Endereco;
+import med.voll.api.medico.DadosMedicoAtualizacao;
 
 @Getter
 @EqualsAndHashCode(of = "id")
@@ -39,4 +40,22 @@ public class Paciente {
         this.endereco = new Endereco(dados.endereco());
     }
 
+    public void atualizarInformacoes(DadosPacienteAtualizacao dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.email() != null) {
+            this.email = dados.email();
+        }
+
+        if (dados.cpf() != null) {
+            this.cpf = dados.cpf();
+        }
+        if (dados.telefone() != null) {
+            this.telefone = dados.telefone();
+        }
+        if (dados.endereco() != null) {
+            this.endereco.atualizarInformacoes(dados.endereco());
+        }
+    }
 }
