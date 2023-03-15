@@ -32,10 +32,6 @@ public class MedicoController {
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(sort={"nome"}) Pageable pageable) {
-        //return repository.findAll().stream().map(DadosListagemMedico::new).toList();
-        // busca todos os medicos
-        //return repository.findAll(pageable).map(DadosListagemMedico::new);
-        // busca apenas os medicos com ativo = true usando padrao do spring - by campo valor
         var page = repository.findAllByAtivoTrue(pageable).map(DadosListagemMedico::new);
         return ResponseEntity.ok(page);
     }
